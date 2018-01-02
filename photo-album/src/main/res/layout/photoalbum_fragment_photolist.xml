@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/photoalbum_background_color"
+    tools:context=".photo.PhotoListFragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView_photos"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layout_bottom"
+        android:orientation="vertical"
+        android:scrollbars="vertical"
+        app:layoutManager="GridLayoutManager"
+        app:spanCount="3" />
+
+    <View
+        android:id="@+id/folder_layout_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0"
+        android:background="#000000"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layout_bottom"
+        android:layout_marginTop="100dp"
+        android:background="@android:color/transparent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView_folder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFF"
+            android:orientation="vertical"
+            android:scrollbars="vertical"
+            app:layoutManager="LinearLayoutManager" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:background="?attr/photoalbum_bottombar_color"
+        android:elevation="4dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_select_folder"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:ellipsize="end"
+            android:gravity="start|center_vertical"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:singleLine="true"
+            tools:text="photos" />
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/checkbox_original"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/photoalbum_text_original" />
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/btn_preview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:enabled="false"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:text="@string/photoalbum_text_preview" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

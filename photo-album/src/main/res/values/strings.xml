@@ -1,0 +1,16 @@
+<resources>
+    <string name="photoalbum_title_activity_photo_album">Photo album</string>
+    <string name="photoalbum_folder_all_photo">All pictures</string>
+
+    <string name="photoalbum_hint_no_photo">No pictures or read image data exception</string>
+    <string name="photoalbum_hint_need_read_permission">You need to approve access and change files on internal storage to use this</string>
+    <string name="photoalbum_hint_no_read_permission">You have denied access and change files on internal storage and cannot use this function</string>
+    <string name="photoalbum_hint_selected_max">Only %d pictures can be selected at most</string>
+
+    <string name="photoalbum_text_notice">Notice</string>
+    <string name="photoalbum_text_done">Done</string>
+    <string name="photoalbum_text_preview">Preview</string>
+    <string name="photoalbum_text_original">Original</string>
+    <string name="photoalbum_text_selected">Selected</string>
+
+</resources>

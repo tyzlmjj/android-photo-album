@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 白色主题 -->
+    <style name="PhotoAlbumTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/photoalbum_Primary</item>
+        <item name="colorPrimaryDark">@color/photoalbum_colorPrimaryDark</item>
+        <item name="colorAccent">@color/photoalbum_colorAccent</item>
+        <item name="android:listDivider">@drawable/photoalbum_divider</item>
+
+        <item name="photoalbum_image_background">@color/photoalbum_imagebg</item>
+        <item name="photoalbum_checked_circle">@drawable/photoalbum_checked_circle_blue_24dp</item>
+        <item name="photoalbum_unchecked_circle">@drawable/photoalbum_unchecked_circle_black_24dp</item>
+        <item name="photoalbum_bottombar_color">@color/photoalbum_Primary</item>
+        <item name="photoalbum_background_color">@color/photoalbum_background</item>
+    </style>
+
+    <!-- 黑色主题 -->
+    <style name="PhotoAlbumDarkTheme" parent="Theme.AppCompat">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <item name="colorPrimary">@color/photoalbum_Primary_dark</item>
+        <item name="colorPrimaryDark">@color/photoalbum_colorPrimaryDark_dark</item>
+        <item name="colorAccent">@color/photoalbum_colorAccent_dark</item>
+        <item name="android:listDivider">@drawable/photoalbum_divider</item>
+
+        <item name="photoalbum_image_background">@color/photoalbum_imagebg_dark</item>
+        <item name="photoalbum_checked_circle">@drawable/photoalbum_checked_circle_green_24dp</item>
+        <item name="photoalbum_unchecked_circle">@drawable/photoalbum_unchecked_circle_white_24dp</item>
+        <item name="photoalbum_bottombar_color">@color/photoalbum_Primary_dark</item>
+        <item name="photoalbum_background_color">@color/photoalbum_background_dark</item>
+    </style>
+
+    <!-- RadioButton 的未选中状态颜色设置 -->
+    <style name="PhotoAlbumRadioButton" >
+        <item name="colorControlNormal">#54000000</item>
+    </style>
+
+</resources>

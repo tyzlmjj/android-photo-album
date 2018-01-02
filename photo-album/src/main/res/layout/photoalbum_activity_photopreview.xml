@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/photoalbum_background_color"
+    android:orientation="vertical"
+    tools:context=".PhotoPreviewActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="8dp"
+        android:theme="?attr/actionBarTheme"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <Button
+            android:id="@+id/btn_done"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/photoalbum_done_btn"
+            android:enabled="false"
+            android:text="@string/photoalbum_text_done"
+            android:textColor="@android:color/white" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <me.majiajie.photoalbum.view.PullLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layout_bottom"
+        android:layout_below="@+id/toolbar">
+
+        <me.majiajie.photoalbum.view.MyViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/layout_bottom"
+            android:layout_below="@+id/toolbar" />
+
+    </me.majiajie.photoalbum.view.PullLayout>
+
+    <FrameLayout
+        android:id="@+id/layout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:background="?attr/photoalbum_bottombar_color"
+        android:elevation="4dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp">
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/checkbox_original"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/photoalbum_text_original" />
+
+        <LinearLayout
+            android:id="@+id/btn_select"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="?attr/selectableItemBackgroundBorderless">
+
+            <ImageView
+                android:id="@+id/img_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingEnd="8dp"
+                android:src="?attr/photoalbum_unchecked_circle" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/photoalbum_text_selected"
+                android:textColor="?attr/colorControlNormal" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</RelativeLayout>
