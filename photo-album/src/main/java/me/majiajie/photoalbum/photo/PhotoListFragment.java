@@ -160,14 +160,16 @@ public class PhotoListFragment extends Fragment {
 
         mSelectedFolderIndex = 0;
 
-        mPhotos = mPhotoData.get(mSelectedFolderIndex).getImages();
+        if (mPhotoData != null && mPhotoData.size() > 0) {
+            mPhotos = mPhotoData.get(mSelectedFolderIndex).getImages();
 
-        //刷新数据
-        mRecyclerViewPhotos.getAdapter().notifyDataSetChanged();
-        mRecyclerViewFolder.getAdapter().notifyDataSetChanged();
+            //刷新数据
+            mRecyclerViewPhotos.getAdapter().notifyDataSetChanged();
+            mRecyclerViewFolder.getAdapter().notifyDataSetChanged();
 
-        //设置按钮显示的文件夹名字
-        mBtnSelectFolder.setText(mPhotoData.get(mSelectedFolderIndex).getName());
+            //设置按钮显示的文件夹名字
+            mBtnSelectFolder.setText(mPhotoData.get(mSelectedFolderIndex).getName());
+        }
     }
 
     /**
@@ -437,9 +439,11 @@ public class PhotoListFragment extends Fragment {
         @Override
         public void onBindViewHolder(final FolderViewHolder holder, int position) {
             PhotosFolder folder = mPhotoData.get(position);
+
             ImageLoader.loadFileAndCenterCrop(holder.imgPhoto,folder.getFirstImage());
-            holder.tvCount.setText(folder.getImages() == null ? "0" : folder.getImages().size() + "");
             holder.tvName.setText(folder.getName());
+            int number = folder.getImages() == null ? 0 : folder.getImages().size();
+            holder.tvCount.setText(getString(R.string.photoalbum_text_photos_number,number));
             holder.radioSelect.setChecked(mSelectedFolderIndex == position);
 
             // 点击Item

@@ -236,7 +236,7 @@ public class PhotoAlbumActivity extends AppCompatActivity implements PhotoDataLo
     private void addLoadDataFragment() {
         PhotoDataLoadFragment photoDataLoadFragment = (PhotoDataLoadFragment) getSupportFragmentManager().findFragmentByTag(TAG_PHOTO_LOAD);
         if (photoDataLoadFragment == null){
-            photoDataLoadFragment = PhotoDataLoadFragment.newInstance(new String[]{"gif"},null);
+            photoDataLoadFragment = PhotoDataLoadFragment.newInstance(null,new String[]{"gif"});
             getSupportFragmentManager().beginTransaction()
                     .add(photoDataLoadFragment,TAG_PHOTO_LOAD).commitAllowingStateLoss();
         }
