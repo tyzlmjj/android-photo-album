@@ -6,6 +6,7 @@
     android:background="?attr/selectableItemBackground"
     android:orientation="horizontal"
     android:padding="5dp"
+    android:theme="@style/FolderListTheme"
     >
 
     <ImageView
@@ -31,7 +32,7 @@
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="16sp"
             tools:text="文件夹名称"
             android:textColor="#DD000000"/>
 
@@ -39,8 +40,9 @@
             android:id="@+id/tv_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            tools:text="200" />
+            android:textSize="12sp"
+            tools:text="200"
+            android:textColor="#54000000"/>
 
     </LinearLayout>
 
@@ -52,7 +54,6 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:duplicateParentState="true"
-        android:theme="@style/PhotoAlbumRadioButton"
         />
 
 </LinearLayout>

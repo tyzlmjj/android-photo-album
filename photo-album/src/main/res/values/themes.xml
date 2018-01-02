@@ -32,9 +32,10 @@
         <item name="photoalbum_background_color">@color/photoalbum_background_dark</item>
     </style>
 
-    <!-- RadioButton 的未选中状态颜色设置 -->
-    <style name="PhotoAlbumRadioButton" >
-        <item name="colorControlNormal">#54000000</item>
+    <!-- 单独设置文件夹列表的部分属性 -->
+    <style name="FolderListTheme" >
+        <item name="colorControlHighlight">#1f000000</item>
+        <item name="colorControlNormal">#8a000000</item>
     </style>
 
 </resources>

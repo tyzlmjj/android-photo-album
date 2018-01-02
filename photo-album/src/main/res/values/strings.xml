@@ -7,10 +7,11 @@
     <string name="photoalbum_hint_no_read_permission">You have denied access and change files on internal storage and cannot use this function</string>
     <string name="photoalbum_hint_selected_max">Only %d pictures can be selected at most</string>
 
+    <string name="photoalbum_text_photos_number">%d</string>
     <string name="photoalbum_text_notice">Notice</string>
     <string name="photoalbum_text_done">Done</string>
     <string name="photoalbum_text_preview">Preview</string>
-    <string name="photoalbum_text_original">Original</string>
-    <string name="photoalbum_text_selected">Selected</string>
+    <string name="photoalbum_text_original">Full image</string>
+    <string name="photoalbum_text_selected">Select</string>
 
 </resources>

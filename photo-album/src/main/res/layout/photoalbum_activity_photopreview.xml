@@ -83,7 +83,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/photoalbum_text_selected"
-                android:textColor="?attr/colorControlNormal" />
+                android:textColor="?android:attr/textColorPrimary" />
+            <!--colorControlNormal-->
 
         </LinearLayout>
 

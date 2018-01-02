@@ -52,18 +52,24 @@
         android:elevation="4dp"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_select_folder"
+        <FrameLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="?attr/selectableItemBackground"
-            android:ellipsize="end"
-            android:gravity="start|center_vertical"
-            android:paddingEnd="16dp"
-            android:paddingStart="16dp"
-            android:singleLine="true"
-            tools:text="photos" />
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/btn_select_folder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:ellipsize="end"
+                android:gravity="start|center_vertical"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:singleLine="true"
+                tools:text="photos" />
+
+        </FrameLayout>
 
         <android.support.v7.widget.AppCompatCheckBox
             android:id="@+id/checkbox_original"
