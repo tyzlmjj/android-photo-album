@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -146,10 +145,9 @@ public class PhotoDataLoadFragment extends Fragment {
                     long width = cursor.getLong(WIDTH);
                     long height = cursor.getLong(HEIGHT);
 
-                    if (!TextUtils.isEmpty(path) && !TextUtils.isEmpty(name) && !isFilter(path)) {
+                    if (!TextUtils.isEmpty(path) && !TextUtils.isEmpty(name) && !isFilter(mime_type)) {
                         Photo photo = new Photo(id,path,name,mime_type,width,height,size,date_add,date_modified);
                         allPhotoList.add(photo);
-
                         File imageParentFile = new File(path).getParentFile();
                         PhotosFolder floder = new PhotosFolder(imageParentFile.getAbsolutePath());
 
@@ -197,24 +195,20 @@ public class PhotoDataLoadFragment extends Fragment {
 
     /**
      * 判断是否过滤
-     * @param path 图片地址
+     * @param mime_type 图片类型
      * @return true 过滤
      */
-    private boolean isFilter(@NonNull String path) {
-
-        if (!(new File(path).exists())) {
-            return false;
-        }
+    private boolean isFilter(String mime_type) {
 
         if (mShow != null) {
             for (String show : mShow) {
-                if (path.toLowerCase().endsWith(show)) {
+                if (TextUtils.equals(mime_type,show)) {
                     return false;
                 }
             }
         } else if (mFilter != null) {
             for (String filte : mFilter) {
-                if (path.toLowerCase().endsWith(filte)) {
+                if (TextUtils.equals(mime_type,filte)) {
                     return true;
                 }
             }

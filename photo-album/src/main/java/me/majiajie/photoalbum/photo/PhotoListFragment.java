@@ -127,7 +127,7 @@ public class PhotoListFragment extends Fragment {
         mFolderLayoutBackground = view.findViewById(R.id.folder_layout_background);
         mRecyclerViewFolder = view.findViewById(R.id.recyclerView_folder);
         mBtnSelectFolder = view.findViewById(R.id.btn_select_folder);
-        mCheckboxOriginal = view.findViewById(R.id.checkbox_original);
+        mCheckboxOriginal = view.findViewById(R.id.checkbox_full_image);
         mBtnPreview = view.findViewById(R.id.btn_preview);
 
         // 分隔线
@@ -173,18 +173,26 @@ public class PhotoListFragment extends Fragment {
     }
 
     /**
+     * 设置"原图"按钮的显示隐藏
+     * @param show true 显示
+     */
+    public void showFullImageBtn(boolean show) {
+        mCheckboxOriginal.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    /**
      * 是否使用原图
      * @return true 使用原图
      */
-    public boolean useOriginal(){
+    public boolean isUseFullImage(){
         return mCheckboxOriginal.isChecked();
     }
 
     /**
      * 设置是否使用原图
      */
-    public void setUseOriginal(boolean useOriginal){
-        mCheckboxOriginal.setChecked(useOriginal);
+    public void setUseFullImage(boolean useFullImage){
+        mCheckboxOriginal.setChecked(useFullImage);
     }
 
     /**

@@ -25,12 +25,21 @@ public class RequestPermissionFragment extends Fragment {
 
     private static final int REQUEST_PERMISSIONS_CODE = 6666;
 
+    /**
+     * 权限数组
+     */
     private String[] mPermissions;
 
+    /**
+     * 提示语
+     */
     private String mHint;
 
     private RequestPermissionsCallback mRequestPermissionsCallback;
 
+    /**
+     * 请求权限的回调
+     */
     public interface RequestPermissionsCallback {
 
         /**

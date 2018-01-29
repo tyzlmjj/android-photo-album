@@ -1,0 +1,29 @@
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'photo-album'
+
+    publishedGroupId = 'me.majiajie'
+    libraryName = 'PhotoAlbum'
+    artifact = 'photo-album'
+
+    libraryDescription = 'Android photo album library'
+
+    siteUrl = 'https://github.com/tyzlmjj/android-photo-album'
+    gitUrl = 'https://github.com/tyzlmjj/android-photo-album.git'
+
+    libraryVersion = rootProject.ext.versionName
+
+    developerId = 'tyzlmjj'
+    developerName = 'Ma JiaJie'
+    developerEmail = 'tyzl931019@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+apply from: 'https://raw.githubusercontent.com/tyzlmjj/Gradle/master/JCenter/maven_install.gradle'
+apply from: 'https://raw.githubusercontent.com/tyzlmjj/Gradle/master/JCenter/bintray.gradle'
+
+
+

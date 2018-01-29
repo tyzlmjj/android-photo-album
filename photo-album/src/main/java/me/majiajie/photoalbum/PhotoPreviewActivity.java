@@ -102,7 +102,7 @@ public class PhotoPreviewActivity extends AppCompatActivity {
         mBtnDone = findViewById(R.id.btn_done);
         mViewPager = findViewById(R.id.viewPager);
         mLayoutBottom = findViewById(R.id.layout_bottom);
-        mCheckboxOriginal = findViewById(R.id.checkbox_original);
+        mCheckboxOriginal = findViewById(R.id.checkbox_full_image);
         mBtnSelect = findViewById(R.id.btn_select);
         mImgSelect = findViewById(R.id.img_select);
 
@@ -110,7 +110,8 @@ public class PhotoPreviewActivity extends AppCompatActivity {
         mSelectedPhotos = new ArrayList<>(mRequestData.getPhotos());
 
         // 设置原图选择
-        mCheckboxOriginal.setChecked(mRequestData.isUseOriginal());
+        mCheckboxOriginal.setChecked(mRequestData.isUseFullImage());
+        mCheckboxOriginal.setVisibility(mRequestData.isShowUseFullImageBtn() ? View.VISIBLE : View.INVISIBLE);
 
         // 显示图片
         mViewPager.setAdapter(new PhotosPagerAdapter());
@@ -225,8 +226,8 @@ public class PhotoPreviewActivity extends AppCompatActivity {
      */
     private void backResult(boolean done) {
         Intent i = new Intent();
-        i.putExtra(ARG_RESULT,new PhotoPreviewResult(mSelectedPhotos,mCheckboxOriginal.isChecked(),done));
-        setResult(Activity.RESULT_OK,i);
+        i.putExtra(ARG_RESULT,new PhotoPreviewResult(mSelectedPhotos,mCheckboxOriginal.isChecked()));
+        setResult(done ? Activity.RESULT_OK : Activity.RESULT_CANCELED,i);
         PhotoPreviewActivity.this.finish();
     }
 
@@ -289,7 +290,12 @@ public class PhotoPreviewActivity extends AppCompatActivity {
         /**
          * 是否使用原图
          */
-        private boolean useOriginal;
+        private boolean useFullImage;
+
+        /**
+         * 是否显示选择"原图"的按钮
+         */
+        private boolean showUseFullImageBtn;
 
         /**
          * 主题
@@ -297,17 +303,19 @@ public class PhotoPreviewActivity extends AppCompatActivity {
         @StyleRes
         private int theme;
 
-        public RequestData(ArrayList<Photo> photos, int maxPhotoNumber, boolean useOriginal) {
+        public RequestData(ArrayList<Photo> photos, int maxPhotoNumber, boolean useFullImage) {
             this.photos = photos;
             this.maxPhotoNumber = maxPhotoNumber;
-            this.useOriginal = useOriginal;
+            this.useFullImage = useFullImage;
             theme = R.style.PhotoAlbumTheme;
         }
+
 
         protected RequestData(Parcel in) {
             photos = in.createTypedArrayList(Photo.CREATOR);
             maxPhotoNumber = in.readInt();
-            useOriginal = in.readByte() != 0;
+            useFullImage = in.readByte() != 0;
+            showUseFullImageBtn = in.readByte() != 0;
             theme = in.readInt();
         }
 
@@ -315,7 +323,8 @@ public class PhotoPreviewActivity extends AppCompatActivity {
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeTypedList(photos);
             dest.writeInt(maxPhotoNumber);
-            dest.writeByte((byte) (useOriginal ? 1 : 0));
+            dest.writeByte((byte) (useFullImage ? 1 : 0));
+            dest.writeByte((byte) (showUseFullImageBtn ? 1 : 0));
             dest.writeInt(theme);
         }
 
@@ -335,6 +344,14 @@ public class PhotoPreviewActivity extends AppCompatActivity {
                 return new RequestData[size];
             }
         };
+
+        public boolean isShowUseFullImageBtn() {
+            return showUseFullImageBtn;
+        }
+
+        public void setShowUseFullImageBtn(boolean showUseFullImageBtn) {
+            this.showUseFullImageBtn = showUseFullImageBtn;
+        }
 
         public int getTheme() {
             return theme;
@@ -360,12 +377,12 @@ public class PhotoPreviewActivity extends AppCompatActivity {
             this.maxPhotoNumber = maxPhotoNumber;
         }
 
-        public boolean isUseOriginal() {
-            return useOriginal;
+        public boolean isUseFullImage() {
+            return useFullImage;
         }
 
-        public void setUseOriginal(boolean useOriginal) {
-            this.useOriginal = useOriginal;
+        public void setUseFullImage(boolean useFullImage) {
+            this.useFullImage = useFullImage;
         }
     }
 
@@ -384,28 +401,20 @@ public class PhotoPreviewActivity extends AppCompatActivity {
          */
         private boolean useOriginal;
 
-        /**
-         * 是否是点击完成按钮的返回（点返回按钮也会返回结果）
-         */
-        private boolean done;
-
-        PhotoPreviewResult(ArrayList<Photo> selectedPhoto, boolean useOriginal, boolean done) {
+        PhotoPreviewResult(ArrayList<Photo> selectedPhoto, boolean useOriginal) {
             this.selectedPhoto = selectedPhoto;
             this.useOriginal = useOriginal;
-            this.done = done;
         }
 
         protected PhotoPreviewResult(Parcel in) {
             selectedPhoto = in.createTypedArrayList(Photo.CREATOR);
             useOriginal = in.readByte() != 0;
-            done = in.readByte() != 0;
         }
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeTypedList(selectedPhoto);
             dest.writeByte((byte) (useOriginal ? 1 : 0));
-            dest.writeByte((byte) (done ? 1 : 0));
         }
 
         @Override
@@ -441,12 +450,5 @@ public class PhotoPreviewActivity extends AppCompatActivity {
             this.useOriginal = useOriginal;
         }
 
-        public boolean isDone() {
-            return done;
-        }
-
-        public void setDone(boolean done) {
-            this.done = done;
-        }
     }
 }

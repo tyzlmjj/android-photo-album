@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     public void openPhotoAlbumDarkTheme(View view) {
         PhotoAlbumActivity.RequestData requestData = new PhotoAlbumActivity.RequestData();
         requestData.setTheme(R.style.PhotoAlbumDarkTheme);
+        requestData.setShowFullImageBtn(false);
+        requestData.setFilterImageMimeType(new String[]{"image/png"});
         PhotoAlbumActivity.startActivityForResult(this,requestData);
     }
 }

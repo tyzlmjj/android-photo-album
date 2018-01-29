@@ -2,8 +2,6 @@ package me.majiajie.androidphotoalbum;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * Example local unit test, which will execute on the development machine (host).
  *
@@ -12,6 +10,7 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
+
+        System.out.println(Math.ceil(1.2566637f));
     }
 }
