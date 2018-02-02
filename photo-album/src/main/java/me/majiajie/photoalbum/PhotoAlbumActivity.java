@@ -72,6 +72,29 @@ public class PhotoAlbumActivity extends AppCompatActivity implements PhotoDataLo
     /**
      * 启动自定义相册页面
      *
+     * @param fragment {@link Fragment}
+     * @param data     请求的参数
+     */
+    public static void startActivityForResult(Fragment fragment, RequestData data) {
+        startActivityForResult(fragment,data,REQUEST_CODE);
+    }
+
+    /**
+     * 启动自定义相册页面
+     *
+     * @param fragment {@link Fragment}
+     * @param data     请求的参数
+     * @param requestCode 请求代码
+     */
+    public static void startActivityForResult(Fragment fragment, RequestData data,int requestCode) {
+        Intent intent = new Intent(fragment.getContext(), PhotoAlbumActivity.class);
+        intent.putExtra(ARG_DATA, data);
+        fragment.startActivityForResult(intent, requestCode);
+    }
+
+    /**
+     * 启动自定义相册页面
+     *
      * @param activity {@link Activity}
      * @param data     请求的参数
      */

@@ -39,11 +39,6 @@ public class PullLayout extends FrameLayout {
     private View mChildView;
 
     /**
-     * 子视图的接口实现
-     */
-    private PullChild mPullChild;
-
-    /**
      * 记录当前活跃的指针
      */
     private int mActivePointerId = INVALID_POINTER_ID;
@@ -61,19 +56,7 @@ public class PullLayout extends FrameLayout {
     /**
      * 需要拉动的子视图需要实现的接口
      */
-    public interface PullChild{
-
-        /**
-         * 判断是否在最左侧
-         */
-        boolean isLeft();
-
-        /**
-         * 判断是否在最右侧
-         */
-        boolean isRight();
-
-    }
+    public interface PullChild{}
 
     public PullLayout(@NonNull Context context) {
         this(context,null);
@@ -95,13 +78,16 @@ public class PullLayout extends FrameLayout {
         for (int i = 0; i < n; i++) {
             View view = getChildAt(i);
             if (view instanceof PullChild){
-                mPullChild = (PullChild) view;
                 mChildView = view;
                 break;
             }
         }
-        if (mPullChild == null){
-            throw new ClassCastException("should be a child implemented PullChild");
+        if (mChildView == null){
+            if (n > 0){
+                mChildView = getChildAt(0);
+            } else {
+                throw new ClassCastException("should be have a child");
+            }
         }
     }
 
@@ -120,8 +106,14 @@ public class PullLayout extends FrameLayout {
                 final int pointerIndex = ev.findPointerIndex(mActivePointerId);
                 if (pointerIndex != -1) {
                     final float x = ev.getX(pointerIndex);
-                    float deltaX = Math.abs(x - mLastTouchX);
-                    isShouldIntercept = deltaX > 8;
+                    float deltaX = x - mLastTouchX;
+
+                    if (deltaX > 8){
+                        isShouldIntercept = !mChildView.canScrollHorizontally(-1);
+                    } else if (deltaX < -8){
+                        isShouldIntercept = !mChildView.canScrollHorizontally(1);
+                    }
+
                     mLastTouchX = x;
                     mActivePointerId = ev.getPointerId(0);
                 }
@@ -143,7 +135,7 @@ public class PullLayout extends FrameLayout {
             }
         }
 
-        if (isShouldIntercept && (mPullChild.isLeft() || mPullChild.isRight())){
+        if (isShouldIntercept){
             // 暂停可能存在的回复动画
             ValueAnimator animator = getGoBackAnim();
             if (animator.isStarted()){
@@ -209,7 +201,7 @@ public class PullLayout extends FrameLayout {
             }
         }
 
-        if (!shouldMove){// 如果不需要再拖动，就将视图移回顶部
+        if (!shouldMove){// 如果不需要再拖动，就将视图移回初始位置
             mTmpX = 0f;
             goBack();
         }
