@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -42,6 +43,8 @@ public class PhotoAlbumActivity extends AppCompatActivity implements PhotoDataLo
 
     private final String TAG_REQUEST_PERMISSION = "TAG_REQUEST_PERMISSION";
 
+    private final String TAG_COMPLETE_FRAGMENT = "TAG_COMPLETE_FRAGMENT";
+
     /**
      * 读取外部文件的权限
      */
@@ -68,6 +71,11 @@ public class PhotoAlbumActivity extends AppCompatActivity implements PhotoDataLo
      * 请求的参数
      */
     private RequestData mRequestData;
+
+    /**
+     * 用于处理结果的Fragment(不一定存在)
+     */
+    private BaseCompleteFragment mBaseCompleteFragment;
 
     /**
      * 启动自定义相册页面
@@ -165,7 +173,24 @@ public class PhotoAlbumActivity extends AppCompatActivity implements PhotoDataLo
             }
         });
 
+        // 设置显示或隐藏原图按钮
         mPhotoListFragment.showFullImageBtn(mRequestData.isShowFullImageBtn());
+
+        // 如果传入了Fragment类名字段就添加Fragment
+        if (!TextUtils.isEmpty(mRequestData.getFragmentClassName())){
+            try {
+                mBaseCompleteFragment = (BaseCompleteFragment) getSupportFragmentManager().findFragmentByTag(TAG_COMPLETE_FRAGMENT);
+                if (mBaseCompleteFragment == null){
+                    mBaseCompleteFragment = (BaseCompleteFragment) Class.forName(mRequestData.getFragmentClassName()).newInstance();
+                    getSupportFragmentManager().beginTransaction()
+                            .add(mBaseCompleteFragment,TAG_COMPLETE_FRAGMENT)
+                            .commit();
+                }
+                
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private boolean once = true;
@@ -256,13 +281,14 @@ public class PhotoAlbumActivity extends AppCompatActivity implements PhotoDataLo
     private void done(ArrayList<Photo> photos) {
         if (photos != null && photos.size() > 0) {
             ResultData resultData = new ResultData(photos, mPhotoListFragment.isUseFullImage());
-            Intent intent = new Intent();
-            intent.putExtra(ARG_RESULT, resultData);
-            setResult(Activity.RESULT_OK, intent);
-            PhotoAlbumActivity.this.finish();
-        } else {
-            //TODO 没有选择图片
-
+            if (mBaseCompleteFragment != null){
+                mBaseCompleteFragment.onResultData(resultData);
+            } else {
+                Intent intent = new Intent();
+                intent.putExtra(ARG_RESULT, resultData);
+                setResult(Activity.RESULT_OK, intent);
+                PhotoAlbumActivity.this.finish();
+            }
         }
     }
 
@@ -407,6 +433,12 @@ public class PhotoAlbumActivity extends AppCompatActivity implements PhotoDataLo
          */
         private String[] filterImageMimeType;
 
+        /**
+         * 一个继承{@link BaseCompleteFragment}的Fragment的全名,用于对选择图片的结果进行处理，
+         * 而不是默认的返回到上一个Activity
+         */
+        private String fragmentClassName;
+
         public RequestData(){}
 
         protected RequestData(Parcel in) {
@@ -415,6 +447,7 @@ public class PhotoAlbumActivity extends AppCompatActivity implements PhotoDataLo
             showFullImageBtn = in.readByte() != 0;
             showImageMimeType = in.createStringArray();
             filterImageMimeType = in.createStringArray();
+            fragmentClassName = in.readString();
         }
 
         @Override
@@ -424,6 +457,7 @@ public class PhotoAlbumActivity extends AppCompatActivity implements PhotoDataLo
             dest.writeByte((byte) (showFullImageBtn ? 1 : 0));
             dest.writeStringArray(showImageMimeType);
             dest.writeStringArray(filterImageMimeType);
+            dest.writeString(fragmentClassName);
         }
 
         @Override
@@ -442,6 +476,14 @@ public class PhotoAlbumActivity extends AppCompatActivity implements PhotoDataLo
                 return new RequestData[size];
             }
         };
+
+        public String getFragmentClassName() {
+            return fragmentClassName;
+        }
+
+        public void setFragmentClassName(String fragmentClassName) {
+            this.fragmentClassName = fragmentClassName;
+        }
 
         public int getMaxPhotoNumber() {
             return maxPhotoNumber;
