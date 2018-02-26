@@ -1,20 +1,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="me.majiajie.photoalbum" >
+    package="me.majiajie.photoalbum">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application>
         <activity
             android:name=".PhotoAlbumActivity"
             android:label="@string/photoalbum_title_activity_photo_album"
-            android:theme="@style/PhotoAlbumTheme"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".PhotoPreviewActivity"
-            android:label=""
-            android:theme="@style/PhotoAlbumTheme"
             android:screenOrientation="portrait"
-            />
+            android:theme="@style/PhotoAlbumTheme" />
+
+        <activity
+            android:name=".PhotoPreviewActivity"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/PhotoAlbumTheme" />
     </application>
 </manifest>

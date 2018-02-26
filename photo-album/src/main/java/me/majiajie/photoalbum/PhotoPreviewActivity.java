@@ -26,9 +26,9 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import me.majiajie.photoalbum.imgload.ImageLoader;
 import me.majiajie.photoalbum.photo.Photo;
 import me.majiajie.photoalbum.utils.AttrUtils;
-import me.majiajie.photoalbum.utils.ImageLoader;
 
 /**
  * 图片选择时预览
@@ -47,6 +47,8 @@ public class PhotoPreviewActivity extends AppCompatActivity {
     private AppCompatCheckBox mCheckboxOriginal;
     private LinearLayout mBtnSelect;
     private ImageView mImgSelect;
+
+    private ImageLoader mImageLoader;
 
     /**
      * 选中的图片
@@ -105,6 +107,8 @@ public class PhotoPreviewActivity extends AppCompatActivity {
         mCheckboxOriginal = findViewById(R.id.checkbox_full_image);
         mBtnSelect = findViewById(R.id.btn_select);
         mImgSelect = findViewById(R.id.img_select);
+
+        mImageLoader = new ImageLoader(this);
 
         // 选中的图片集合分开处理（因为只会传入选中的图片，所以这样简单处理了）
         mSelectedPhotos = new ArrayList<>(mRequestData.getPhotos());
@@ -251,7 +255,7 @@ public class PhotoPreviewActivity extends AppCompatActivity {
             Photo photo = mRequestData.getPhotos().get(position);
             PhotoViewHolder holder = new PhotoViewHolder(container.getContext());
             container.addView(holder.itemView);
-            ImageLoader.loadFile(holder.imageView,photo.getPath());
+            mImageLoader.loadImage(photo.getPath(),holder.imageView);
             return holder.itemView;
         }
 

@@ -32,5 +32,4 @@ public class SelectPhotoCompleteFragment extends BaseCompleteFragment {
         Toast.makeText(mContext,String.format(Locale.CHINA,"选择了%d张图片\n结果可以在无UI的Fragment中处理",resultData.getPhotos().size()),Toast.LENGTH_LONG).show();
     }
 
-
 }

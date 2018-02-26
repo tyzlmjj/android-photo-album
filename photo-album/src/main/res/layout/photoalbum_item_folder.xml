@@ -6,19 +6,19 @@
     android:background="?attr/selectableItemBackground"
     android:orientation="horizontal"
     android:padding="5dp"
-    android:theme="@style/FolderListTheme"
-    >
+    android:gravity="center_vertical"
+    android:theme="@style/FolderListTheme">
 
     <ImageView
         android:id="@+id/img_photo"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_gravity="center_vertical"
         android:background="@drawable/photoalbum_folder_background"
         android:paddingBottom="17dp"
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
-        android:paddingTop="9dp" />
+        android:paddingTop="9dp"
+        android:scaleType="centerCrop" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -32,17 +32,17 @@
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#DD000000"
             android:textSize="16sp"
-            tools:text="文件夹名称"
-            android:textColor="#DD000000"/>
+            tools:text="文件夹名称" />
 
         <TextView
             android:id="@+id/tv_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#54000000"
             android:textSize="12sp"
-            tools:text="200"
-            android:textColor="#54000000"/>
+            tools:text="200" />
 
     </LinearLayout>
 
@@ -53,7 +53,6 @@
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:duplicateParentState="true"
-        />
+        android:duplicateParentState="true" />
 
 </LinearLayout>

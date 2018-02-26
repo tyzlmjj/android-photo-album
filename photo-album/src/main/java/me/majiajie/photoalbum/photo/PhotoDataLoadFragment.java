@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import me.majiajie.photoalbum.R;
@@ -39,9 +40,10 @@ public class PhotoDataLoadFragment extends Fragment {
      */
     private String[] mShow;
 
-    private ArrayList<PhotosFolder> mPhotosFolderList;
-
-    private PhotosLoadCallBack mPhotosCallBack;
+    /**
+     *
+     */
+    private WeakReference<PhotosLoadCallBack> mPhotosCallBack;
 
     /**
      * 数据加载回调
@@ -73,7 +75,7 @@ public class PhotoDataLoadFragment extends Fragment {
         super.onAttach(context);
         mContext = context;
         if (context instanceof PhotosLoadCallBack){
-            mPhotosCallBack = (PhotosLoadCallBack) context;
+            mPhotosCallBack = new WeakReference<>((PhotosLoadCallBack) context);
         } else {
             throw new ClassCastException(context.toString() + " must implemented PhotosLoadCallBack");
         }
@@ -92,6 +94,7 @@ public class PhotoDataLoadFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mContext = null;
+        mPhotosCallBack = null;
     }
 
     private LoaderManager.LoaderCallbacks<Cursor> mLoaderCallback = new LoaderManager.LoaderCallbacks<Cursor>() {
@@ -177,15 +180,16 @@ public class PhotoDataLoadFragment extends Fragment {
                     photosFolderList.add(0, floder);
                 }
 
-                mPhotosFolderList = photosFolderList;
-
-                if (mPhotosCallBack != null) {
-                    mPhotosCallBack.onPhotosLoadFinished(mPhotosFolderList);
+                PhotosLoadCallBack callBack = mPhotosCallBack.get();
+                if (callBack != null){
+                    callBack.onPhotosLoadFinished(photosFolderList);
                 }
 
             } else {
-                //没有数据或异常
-                Toast.makeText(mContext, R.string.photoalbum_hint_no_photo, Toast.LENGTH_SHORT).show();
+                if (mContext != null) {
+                    //没有数据或异常
+                    Toast.makeText(mContext, R.string.photoalbum_hint_no_photo, Toast.LENGTH_SHORT).show();
+                }
             }
         }
 

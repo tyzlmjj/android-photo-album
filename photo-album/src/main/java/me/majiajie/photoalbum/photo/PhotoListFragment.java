@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -27,8 +28,8 @@ import java.util.List;
 import java.util.Locale;
 
 import me.majiajie.photoalbum.R;
+import me.majiajie.photoalbum.imgload.ImageLoader;
 import me.majiajie.photoalbum.utils.AttrUtils;
-import me.majiajie.photoalbum.utils.ImageLoader;
 import me.majiajie.photoalbum.view.ScaleImageView;
 import me.majiajie.photoalbum.view.UpDownToggleDrawable;
 
@@ -45,6 +46,8 @@ public class PhotoListFragment extends Fragment {
     private Button mBtnSelectFolder;
     private AppCompatCheckBox mCheckboxOriginal;
     private Button mBtnPreview;
+
+    private ImageLoader mImageLoader;
 
     /**
      * 底部上下变化的箭头
@@ -116,12 +119,12 @@ public class PhotoListFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.photoalbum_fragment_photolist, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mRecyclerViewPhotos = view.findViewById(R.id.recyclerView_photos);
         mFolderLayoutBackground = view.findViewById(R.id.folder_layout_background);
@@ -137,6 +140,9 @@ public class PhotoListFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        mImageLoader = new ImageLoader(mContext);
+
         mRecyclerViewPhotos.setAdapter(new PhotoAdapter());
         mRecyclerViewFolder.setAdapter(new FolderAdapter());
         setupAnim();
@@ -144,8 +150,21 @@ public class PhotoListFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mImageLoader.setExitTasksEarly(false);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mImageLoader.setExitTasksEarly(true);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
+        mImageLoader.clearCache();
         mContext = null;
     }
 
@@ -376,7 +395,6 @@ public class PhotoListFragment extends Fragment {
         @Override
         public void onBindViewHolder(final PhotoViewHolder holder, int position) {
             Photo photo = mPhotos.get(position);
-
             // 选中状态
             if (mPhotoSelectedList.contains(photo)){
                 holder.check.setImageResource(AttrUtils.getResourceId(mContext,R.attr.photoalbum_checked_circle));
@@ -387,7 +405,8 @@ public class PhotoListFragment extends Fragment {
                 holder.image.setChecked(false);
                 holder.imageForground.setVisibility(View.VISIBLE);
             }
-            ImageLoader.loadFileAndCenterCrop(holder.image,photo.getPath());
+
+            mImageLoader.loadImage(photo.getPath(),holder.image);
 
             // 点击选中
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -448,7 +467,8 @@ public class PhotoListFragment extends Fragment {
         public void onBindViewHolder(final FolderViewHolder holder, int position) {
             PhotosFolder folder = mPhotoData.get(position);
 
-            ImageLoader.loadFileAndCenterCrop(holder.imgPhoto,folder.getFirstImage());
+            mImageLoader.loadImage(folder.getFirstImage(),holder.imgPhoto);
+
             holder.tvName.setText(folder.getName());
             int number = folder.getImages() == null ? 0 : folder.getImages().size();
             holder.tvCount.setText(getString(R.string.photoalbum_text_photos_number,number));
