@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2012 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package me.majiajie.photoalbum.imgload;
 
 import android.content.Context;
@@ -26,7 +10,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.support.annotation.WorkerThread;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -73,7 +56,7 @@ public abstract class ImageWorker {
      * @param imageView 需要加载的图片的ImageView
      */
     public void loadImage(final String filePath, ImageView imageView) {
-        if (TextUtils.isEmpty(filePath)) {
+        if (TextUtils.isEmpty(filePath) || imageView == null) {
             return;
         }
 
@@ -88,6 +71,7 @@ public abstract class ImageWorker {
             task.imageViewTarget.getSize(new ImageViewTarget.SizeReadyCallback() {
                 @Override
                 public void onSizeReady(View view, int width, int height) {
+
                     final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask((ImageView) view);
                     if (bitmapWorkerTask != null) {
                         final String data = bitmapWorkerTask.mData;
@@ -150,16 +134,6 @@ public abstract class ImageWorker {
     }
 
     /**
-     * 取消ImageView正在执行的图片加载任务
-     */
-    public static void cancelWork(ImageView imageView) {
-        final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
-        if (bitmapWorkerTask != null) {
-            bitmapWorkerTask.cancel(true);
-        }
-    }
-
-    /**
      * @param imageView imageView
      * @return 返回当前ImageView的图片加载任务, 没有则返回null
      */
@@ -188,7 +162,7 @@ public abstract class ImageWorker {
         BitmapWorkerTask(String data, ImageView imageView) {
             mData = data;
             imageViewReference = new WeakReference<>(imageView);
-            imageViewTarget = new ImageViewTarget(imageView);
+            imageViewTarget = new ImageViewTarget(imageView,true);
         }
 
         @Override
@@ -304,20 +278,36 @@ public abstract class ImageWorker {
         new CacheAsyncTask().execute(MESSAGE_CLEAR);
     }
 
+//    /**
+//     * 自定义的{@link BitmapDrawable}用于记录任务等信息
+//     */
+//    private static class AsyncDrawable extends BitmapDrawable {
+//        private final WeakReference<BitmapWorkerTask> bitmapWorkerTaskReference;
+//
+//        AsyncDrawable(Resources res, Bitmap bitmap, BitmapWorkerTask bitmapWorkerTask) {
+//            super(res, bitmap);
+//            bitmapWorkerTaskReference =
+//                    new WeakReference<>(bitmapWorkerTask);
+//        }
+//
+//        BitmapWorkerTask getBitmapWorkerTask() {
+//            return bitmapWorkerTaskReference.get();
+//        }
+//    }
+
     /**
      * 自定义的{@link BitmapDrawable}用于记录任务等信息
      */
     private static class AsyncDrawable extends BitmapDrawable {
-        private final WeakReference<BitmapWorkerTask> bitmapWorkerTaskReference;
+        private final BitmapWorkerTask bitmapWorkerTask;
 
         AsyncDrawable(Resources res, Bitmap bitmap, BitmapWorkerTask bitmapWorkerTask) {
             super(res, bitmap);
-            bitmapWorkerTaskReference =
-                    new WeakReference<>(bitmapWorkerTask);
+            this.bitmapWorkerTask = bitmapWorkerTask;
         }
 
         BitmapWorkerTask getBitmapWorkerTask() {
-            return bitmapWorkerTaskReference.get();
+            return bitmapWorkerTask;
         }
     }
 

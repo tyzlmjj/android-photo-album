@@ -29,11 +29,7 @@ public class ImageViewTarget {
         void onSizeReady(View view,int width, int height);
     }
 
-    public ImageViewTarget(View view) {
-        this(view,false);
-    }
-
-    public ImageViewTarget(View view,boolean waitForLayout) {
+    ImageViewTarget(View view,boolean waitForLayout) {
         sizeDeterminer = new SizeDeterminer(view);
         sizeDeterminer.waitForLayout = waitForLayout;
     }
@@ -148,6 +144,7 @@ public class ImageViewTarget {
 
             int currentWidth = getTargetWidth();
             int currentHeight = getTargetHeight();
+
             if (!isViewStateAndSizeValid(currentWidth, currentHeight)) {
                 return;
             }

@@ -26,15 +26,6 @@ public class ImageMemoryCache {
 
         mCache = new LruCache<String, BitmapDrawable>(maxMemory) {
 
-//            /**
-//             * Notify the removed entry that is no longer being cached
-//             */
-//            @Override
-//            protected void entryRemoved(boolean evicted, String key,
-//                                        BitmapDrawable oldValue, BitmapDrawable newValue) {
-//                mReusableBitmaps.add(new SoftReference<>(oldValue.getBitmap()));
-//            }
-
             @Override
             protected int sizeOf(String key, BitmapDrawable value) {
                 final int bitmapSize = getBitmapSize(value) / 1024;
