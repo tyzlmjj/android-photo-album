@@ -61,6 +61,7 @@ public abstract class ImageWorker {
         }
 
         if (!hasSameWork(filePath, imageView)) {
+
             // 设置ImageView的加载任务
             final BitmapWorkerTask task = new BitmapWorkerTask(filePath, imageView);
             final AsyncDrawable asyncDrawable =
@@ -249,9 +250,6 @@ public abstract class ImageWorker {
                             new ColorDrawable(Color.TRANSPARENT),
                             drawable
                     });
-//            imageView.setBackground(
-//                    new BitmapDrawable(mResources, mLoadingBitmap));
-
             imageView.setImageDrawable(td);
             td.startTransition(FADE_IN_TIME);
         } else {
@@ -299,6 +297,7 @@ public abstract class ImageWorker {
      * 自定义的{@link BitmapDrawable}用于记录任务等信息
      */
     private static class AsyncDrawable extends BitmapDrawable {
+
         private final BitmapWorkerTask bitmapWorkerTask;
 
         AsyncDrawable(Resources res, Bitmap bitmap, BitmapWorkerTask bitmapWorkerTask) {

@@ -166,7 +166,6 @@ public class PhotoAlbumActivity extends AppCompatActivity implements PhotoDataLo
 
         // 点击完成按钮
         mBtnDone.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 done(mSelectedPhotos);
@@ -253,6 +252,7 @@ public class PhotoAlbumActivity extends AppCompatActivity implements PhotoDataLo
             addLoadDataFragment();
         } else {
             Toast.makeText(this, R.string.photoalbum_hint_no_read_permission, Toast.LENGTH_SHORT).show();
+            PhotoAlbumActivity.this.finish();
         }
     }
 

@@ -58,30 +58,35 @@ public class ImageViewTarget {
 
         private final List<SizeReadyCallback> cbs = new ArrayList<>();
 
-        private final View view;
+        private final WeakReference<View> view;
 
         boolean waitForLayout = false;
 
         SizeDeterminer(View view) {
-            this.view = view;
+            this.view = new WeakReference<>(view);
         }
 
         /**
          * 获取View的大小
          */
         void getSize(SizeReadyCallback cb) {
+            View v = view.get();
+            if (v == null){
+                return;
+            }
             int currentWidth = getTargetWidth();
             int currentHeight = getTargetHeight();
             if (isViewStateAndSizeValid(currentWidth, currentHeight)) {
-                cb.onSizeReady(view,currentWidth, currentHeight);
+                cb.onSizeReady(v,currentWidth, currentHeight);
                 return;
             }
 
             if (!cbs.contains(cb)) {
                 cbs.add(cb);
             }
+
             if (layoutListener == null) {
-                ViewTreeObserver observer = view.getViewTreeObserver();
+                ViewTreeObserver observer = v.getViewTreeObserver();
                 layoutListener = new ImageViewTarget.SizeDeterminer.SizeDeterminerLayoutListener(this);
                 observer.addOnPreDrawListener(layoutListener);
             }
@@ -98,7 +103,10 @@ public class ImageViewTarget {
          * 清除所有回调和视图监听
          */
         void clearCallbacksAndListener() {
-            ViewTreeObserver observer = view.getViewTreeObserver();
+            View v = view.get();
+            if (v == null){ return; }
+
+            ViewTreeObserver observer = v.getViewTreeObserver();
             if (observer.isAlive()) {
                 observer.removeOnPreDrawListener(layoutListener);
             }
@@ -129,8 +137,9 @@ public class ImageViewTarget {
          * 通知所有的回调
          */
         private void notifyCbs(int width, int height) {
+            View v = view.get();
             for (SizeReadyCallback cb : new ArrayList<>(cbs)) {
-                cb.onSizeReady(view,width, height);
+                cb.onSizeReady(v,width, height);
             }
         }
 
@@ -158,26 +167,40 @@ public class ImageViewTarget {
         }
 
         private int getTargetHeight() {
-            int verticalPadding = view.getPaddingTop() + view.getPaddingBottom();
-            ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+            View v = view.get();
+            if (v == null){
+                return PENDING_SIZE;
+            }
+            int verticalPadding = v.getPaddingTop() + v.getPaddingBottom();
+            ViewGroup.LayoutParams layoutParams = v.getLayoutParams();
             int layoutParamSize = layoutParams != null ? layoutParams.height : PENDING_SIZE;
-            return getTargetDimen(view.getHeight(), layoutParamSize, verticalPadding);
+            return getTargetDimen(v.getHeight(), layoutParamSize, verticalPadding);
         }
 
         private int getTargetWidth() {
-            int horizontalPadding = view.getPaddingLeft() + view.getPaddingRight();
-            ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+            View v = view.get();
+            if (v == null){
+                return PENDING_SIZE;
+            }
+            int horizontalPadding = v.getPaddingLeft() + v.getPaddingRight();
+            ViewGroup.LayoutParams layoutParams = v.getLayoutParams();
             int layoutParamSize = layoutParams != null ? layoutParams.width : PENDING_SIZE;
-            return getTargetDimen(view.getWidth(), layoutParamSize, horizontalPadding);
+            return getTargetDimen(v.getWidth(), layoutParamSize, horizontalPadding);
         }
 
         private int getTargetDimen(int viewSize, int paramSize, int paddingSize) {
+
+            View v = view.get();
+            if (v == null){
+                return PENDING_SIZE;
+            }
+
             int adjustedParamSize = paramSize - paddingSize;
             if (adjustedParamSize > 0) {
                 return adjustedParamSize;
             }
 
-            if (waitForLayout && view.isLayoutRequested()) {
+            if (waitForLayout && v.isLayoutRequested()) {
                 return PENDING_SIZE;
             }
 
@@ -186,8 +209,8 @@ public class ImageViewTarget {
                 return adjustedViewSize;
             }
 
-            if (!view.isLayoutRequested() && paramSize == ViewGroup.LayoutParams.WRAP_CONTENT) {
-                return getMaxDisplayLength(view.getContext());
+            if (!v.isLayoutRequested() && paramSize == ViewGroup.LayoutParams.WRAP_CONTENT) {
+                return getMaxDisplayLength(v.getContext());
             }
 
             return PENDING_SIZE;

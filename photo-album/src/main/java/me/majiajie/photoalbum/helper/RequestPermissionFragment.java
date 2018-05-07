@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 
 import me.majiajie.photoalbum.R;
 
@@ -51,7 +50,7 @@ public class RequestPermissionFragment extends Fragment {
 
     }
 
-    public static RequestPermissionFragment newInstance(String[] permissions, @Nullable String hint) {
+    public static RequestPermissionFragment newInstance(@NonNull String[] permissions,@NonNull String hint) {
         Bundle args = new Bundle();
         args.putStringArray(ARG_PERMISSIONS, permissions);
         args.putString(ARG_HINT_TEXT, hint);
@@ -117,11 +116,18 @@ public class RequestPermissionFragment extends Fragment {
      * 请求权限
      */
     public void requestPermissions() {
-        if (TextUtils.isEmpty(mHint)) {
-            requestPermissions(mPermissions, REQUEST_PERMISSIONS_CODE);
-        } else {
-            showPermissionsHintDialog();
+        boolean showRationale = false;
+        for (String permission:mPermissions){
+            if (shouldShowRequestPermissionRationale(permission)){
+                showRationale = true;
+                break;
+            }
         }
+        if (!showRationale) {
+            requestPermissions(mPermissions, REQUEST_PERMISSIONS_CODE);
+            return;
+        }
+        showPermissionsHintDialog();
     }
 
     /**
@@ -131,10 +137,10 @@ public class RequestPermissionFragment extends Fragment {
         new AlertDialog.Builder(mContext)
                 .setTitle(R.string.photoalbum_text_notice)
                 .setMessage(mHint)
-                .setPositiveButton(android.R.string.ok, null)
-                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onDismiss(DialogInterface dialogInterface) {
+                    public void onClick(DialogInterface dialogInterface, int i) {
                         requestPermissions(mPermissions, REQUEST_PERMISSIONS_CODE);
                     }
                 })

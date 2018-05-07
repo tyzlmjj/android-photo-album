@@ -2,14 +2,14 @@
 
 Android 本地相册选择
 
-[Demo.apk](https://github.com/tyzlmjj/android-photo-album/releases/download/0.2.1/Demo.apk)
+[Demo.apk](https://github.com/tyzlmjj/android-photo-album/releases/download/0.2.2/Demo.apk)
 
 ## 添加gradle依赖
 
 ```
 implementation 'com.android.support:appcompat-v7:+'
 implementation 'com.android.support:recyclerview-v7:+'
-implementation 'me.majiajie:photo-album:0.2.1'
+implementation 'me.majiajie:photo-album:0.2.2'
 ```
 
 ## 使用
