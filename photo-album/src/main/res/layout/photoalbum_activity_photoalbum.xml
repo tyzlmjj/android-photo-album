@@ -16,14 +16,14 @@
         android:theme="?attr/actionBarTheme"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_done"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:layout_gravity="end|center_vertical"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
-            android:background="@drawable/photoalbum_done_btn"
+            android:background="?attr/photoalbum_done_btn"
             android:enabled="false"
             android:text="@string/photoalbum_text_done"
             android:textColor="@color/photoalbum_btn_textcolor_dark" />

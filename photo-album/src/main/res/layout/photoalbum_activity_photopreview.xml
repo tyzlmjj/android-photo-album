@@ -24,7 +24,7 @@
             android:layout_gravity="end|center_vertical"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
-            android:background="@drawable/photoalbum_done_btn"
+            android:background="?attr/photoalbum_done_btn"
             android:enabled="false"
             android:text="@string/photoalbum_text_done"
             android:textColor="@android:color/white" />

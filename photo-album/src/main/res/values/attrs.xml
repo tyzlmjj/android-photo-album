@@ -5,4 +5,6 @@
     <attr name="photoalbum_unchecked_circle" format="reference"/>
     <attr name="photoalbum_bottombar_color" format="color"/>
     <attr name="photoalbum_background_color" format="color"/>
+
+    <attr name="photoalbum_done_btn" format="reference" />
 </resources>

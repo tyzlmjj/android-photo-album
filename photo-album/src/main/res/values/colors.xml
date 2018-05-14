@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="photoalbum_Primary">#FFF</color>
-    <color name="photoalbum_colorPrimaryDark">#DDD</color>
-    <color name="photoalbum_colorAccent">#4078C0</color>
+    <color name="photoalbum_Primary">#FFFFFFFF</color>
+    <color name="photoalbum_colorPrimaryDark">#FFDDDDDD</color>
+    <color name="photoalbum_colorAccent">#FF4078C0</color>
     <color name="photoalbum_imagebg">#22000000</color>
     <color name="photoalbum_background">#FFF</color>
 
-    <color name="photoalbum_Primary_dark">#414141</color>
-    <color name="photoalbum_colorPrimaryDark_dark">#313131</color>
-    <color name="photoalbum_colorAccent_dark">#43A047</color>
+    <color name="photoalbum_Primary_dark">#FF414141</color>
+    <color name="photoalbum_colorPrimaryDark_dark">#FF313131</color>
+    <color name="photoalbum_colorAccent_dark">#FF43A047</color>
     <color name="photoalbum_imagebg_dark">#22ffffff</color>
-    <color name="photoalbum_background_dark">#000</color>
+    <color name="photoalbum_background_dark">#FF000000</color>
 </resources>

@@ -13,6 +13,8 @@
         <item name="photoalbum_unchecked_circle">@drawable/photoalbum_unchecked_circle_black_24dp</item>
         <item name="photoalbum_bottombar_color">@color/photoalbum_Primary</item>
         <item name="photoalbum_background_color">@color/photoalbum_background</item>
+
+        <item name="photoalbum_done_btn">@drawable/photoalbum_done_btn_blue</item>
     </style>
 
     <!-- 黑色主题 -->
@@ -30,7 +32,11 @@
         <item name="photoalbum_unchecked_circle">@drawable/photoalbum_unchecked_circle_white_24dp</item>
         <item name="photoalbum_bottombar_color">@color/photoalbum_Primary_dark</item>
         <item name="photoalbum_background_color">@color/photoalbum_background_dark</item>
+
+        <item name="photoalbum_done_btn">@drawable/photoalbum_done_btn_green</item>
     </style>
+
+    <style name="asdasd" parent="AlertDialog.AppCompat"/>
 
     <!-- 单独设置文件夹列表的部分属性 -->
     <style name="FolderListTheme" >
