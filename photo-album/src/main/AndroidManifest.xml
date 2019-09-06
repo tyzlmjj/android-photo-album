@@ -6,7 +6,7 @@
 
     <application>
         <activity
-            android:name=".PhotoAlbumActivity"
+            android:name=".AlbumActivity"
             android:label="@string/photoalbum_title_activity_photo_album"
             android:screenOrientation="portrait"
             android:theme="@style/PhotoAlbumTheme" />

@@ -24,4 +24,22 @@
         android:text="打开相册(结果在Fragment中处理)"
         android:onClick="openPhotoWithFragment"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="打开相册(单选图片)"
+        android:onClick="openWithPhoto"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="打开相册(单选视频)"
+        android:onClick="openWithVideo"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="打开相册(图片和视频都选择)"
+        android:onClick="openWithPhotoAndVideo"/>
+
 </LinearLayout>

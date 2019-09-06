@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<me.majiajie.photoalbum.view.SquareFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginBottom="2dp"
+    android:layout_marginLeft="1dp"
+    android:layout_marginRight="1dp"
+    android:background="?attr/photoalbum_image_background">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <me.majiajie.photoalbum.view.ScaleFrameLayout
+            android:id="@+id/layout_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/photoalbum_video_forground">
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:id="@+id/tv_video_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="#eee"
+                android:gravity="center_vertical"
+                android:drawablePadding="5dp"
+                android:padding="8dp"
+                android:drawableStart="@drawable/photoalbum_ic_video_white_18dp"
+                android:layout_gravity="end|bottom"
+                tools:text="00:09"/>
+
+        </me.majiajie.photoalbum.view.ScaleFrameLayout>
+
+        <View
+            android:id="@+id/image_forground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/photoalbum_photo_forground"/>
+
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/check"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="end|top"
+        android:gravity="center"
+        android:padding="6dp"
+        android:elevation="4dp"
+        android:src="@drawable/photoalbum_unchecked_circle_white_24dp" />
+
+</me.majiajie.photoalbum.view.SquareFrameLayout>

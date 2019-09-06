@@ -3,13 +3,14 @@ package me.majiajie.androidphotoalbum;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.Locale;
 
-import me.majiajie.photoalbum.PhotoAlbumActivity;
+import me.majiajie.photoalbum.AlbumActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,28 +23,49 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && requestCode == PhotoAlbumActivity.REQUEST_CODE){
-            PhotoAlbumActivity.ResultData resultData = PhotoAlbumActivity.getResult(data);
+        if (resultCode == Activity.RESULT_OK && requestCode == AlbumActivity.REQUEST_CODE){
+            AlbumActivity.ResultData resultData = AlbumActivity.getResult(data);
             Toast.makeText(this,String.format(Locale.CHINA,"选择了%d张图片",resultData.getPhotos().size()),Toast.LENGTH_LONG).show();
         }
     }
 
     public void openPhotoAlbum(View view) {
-        PhotoAlbumActivity.startActivityForResult(this,new PhotoAlbumActivity.RequestData());
+        AlbumActivity.startActivityForResult(this,new AlbumActivity.RequestData());
     }
 
     public void openPhotoAlbumDarkTheme(View view) {
-        PhotoAlbumActivity.RequestData requestData = new PhotoAlbumActivity.RequestData();
+        AlbumActivity.RequestData requestData = new AlbumActivity.RequestData();
         requestData.setTheme(R.style.PhotoAlbumDarkTheme);
         requestData.setShowFullImageBtn(false);
         requestData.setFilterImageMimeType(new String[]{"image/gif"});
-        PhotoAlbumActivity.startActivityForResult(this,requestData);
+        AlbumActivity.startActivityForResult(this,requestData);
     }
 
     public void openPhotoWithFragment(View view) {
-        PhotoAlbumActivity.RequestData requestData = new PhotoAlbumActivity.RequestData();
+        AlbumActivity.RequestData requestData = new AlbumActivity.RequestData();
         requestData.setFilterImageMimeType(new String[]{"image/gif"});
         requestData.setFragmentClassName(SelectPhotoCompleteFragment.class.getName());
-        PhotoAlbumActivity.startActivityForResult(this,requestData);
+        AlbumActivity.startActivityForResult(this,requestData);
+    }
+
+    public void openWithPhoto(View view) {
+        AlbumActivity.RequestData requestData = new AlbumActivity.RequestData();
+        requestData.setFilterImageMimeType(new String[]{"image/gif"});
+        requestData.setSinglePhoto(true);
+        AlbumActivity.startActivityForResult(this,requestData);
+    }
+
+    public void openWithVideo(View view) {
+        AlbumActivity.RequestData requestData = new AlbumActivity.RequestData();
+        requestData.setMaxPhotoNumber(0);
+        requestData.setSingleVideo(true);
+        AlbumActivity.startActivityForResult(this,requestData);
+    }
+
+    public void openWithPhotoAndVideo(View view) {
+        AlbumActivity.RequestData requestData = new AlbumActivity.RequestData();
+        requestData.setFilterImageMimeType(new String[]{"image/gif"});
+        requestData.setMaxNumber(6);
+        AlbumActivity.startActivityForResult(this,requestData);
     }
 }

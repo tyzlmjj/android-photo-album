@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".PhotoAlbumActivity">
+    tools:context=".AlbumActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -16,7 +16,7 @@
         android:theme="?attr/actionBarTheme"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_done"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
@@ -28,11 +28,11 @@
             android:text="@string/photoalbum_text_done"
             android:textColor="@color/photoalbum_btn_textcolor_dark" />
 
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <fragment
         android:id="@+id/photo_list_fragment"
-        android:name="me.majiajie.photoalbum.photo.PhotoListFragment"
+        android:name="me.majiajie.photoalbum.view.AlbumListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

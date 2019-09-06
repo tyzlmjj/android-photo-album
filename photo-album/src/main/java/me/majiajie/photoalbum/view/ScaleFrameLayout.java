@@ -3,26 +3,27 @@ package me.majiajie.photoalbum.view;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatImageView;
 
 /**
- * 相册列表的图片视图,缩放直接调用
+ * 用于处理缩放动画的布局
  */
-public class ScaleImageView extends AppCompatImageView {
+public class ScaleFrameLayout extends FrameLayout {
 
     private ValueAnimator mAnimator;
 
-    public ScaleImageView(Context context) {
+    public ScaleFrameLayout(@NonNull Context context) {
         this(context,null);
     }
 
-    public ScaleImageView(Context context, @Nullable AttributeSet attrs) {
+    public ScaleFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs,0);
     }
 
-    public ScaleImageView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public ScaleFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mAnimator = ValueAnimator.ofFloat(1.0f,0.8f);
         mAnimator.setDuration(150);
@@ -30,11 +31,10 @@ public class ScaleImageView extends AppCompatImageView {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 float n = (float) valueAnimator.getAnimatedValue();
-                ScaleImageView.this.setScaleX(n);
-                ScaleImageView.this.setScaleY(n);
+                ScaleFrameLayout.this.setScaleX(n);
+                ScaleFrameLayout.this.setScaleY(n);
             }
         });
-
     }
 
     public void startAnim(){

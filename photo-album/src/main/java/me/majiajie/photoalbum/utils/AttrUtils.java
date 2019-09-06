@@ -1,10 +1,11 @@
 package me.majiajie.photoalbum.utils;
 
 import android.content.Context;
-import android.support.annotation.AttrRes;
-import android.support.annotation.NonNull;
-import android.support.v4.content.res.TypedArrayUtils;
 import android.util.TypedValue;
+
+import androidx.annotation.AttrRes;
+import androidx.annotation.NonNull;
+import androidx.core.content.res.TypedArrayUtils;
 
 /**
  * 获取自定义属性值<p>

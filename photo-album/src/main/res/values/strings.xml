@@ -1,11 +1,15 @@
 <resources>
-    <string name="photoalbum_title_activity_photo_album">Photo album</string>
-    <string name="photoalbum_folder_all_photo">All pictures</string>
+    <string name="photoalbum_title_activity_photo_album">Album</string>
+    <string name="photoalbum_folder_all_photo">All pictures </string>
+    <string name="photoalbum_folder_all_file">Pictures and video</string>
+    <string name="photoalbum_folder_all_video">All video</string>
 
     <string name="photoalbum_hint_no_photo">No pictures or read image data exception</string>
     <string name="photoalbum_hint_need_read_permission">You need to approve access and change files on internal storage to use this</string>
     <string name="photoalbum_hint_no_read_permission">You have denied access and change files on internal storage and cannot use this function</string>
-    <string name="photoalbum_hint_selected_max">Only %d pictures can be selected at most</string>
+    <string name="photoalbum_hint_selected_max_photo">Only %d pictures can be selected at most</string>
+    <string name="photoalbum_hint_selected_max_video">Only %d videos can be selected at most</string>
+    <string name="photoalbum_hint_unable_select_image_video_same_time">Unable to select image or video at the same time</string>
 
     <string name="photoalbum_text_photos_number">%d</string>
     <string name="photoalbum_text_notice">Notice</string>

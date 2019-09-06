@@ -6,7 +6,7 @@ ext {
     libraryName = 'PhotoAlbum'
     artifact = 'photo-album'
 
-    libraryDescription = 'Android photo album library'
+    libraryDescription = 'Android album library'
 
     siteUrl = 'https://github.com/tyzlmjj/android-photo-album'
     gitUrl = 'https://github.com/tyzlmjj/android-photo-album.git'
@@ -14,7 +14,7 @@ ext {
     libraryVersion = rootProject.ext.versionName
 
     developerId = 'tyzlmjj'
-    developerName = 'Ma JiaJie'
+    developerName = 'JiaJie Ma'
     developerEmail = 'tyzl931019@gmail.com'
 
     licenseName = 'The Apache Software License, Version 2.0'

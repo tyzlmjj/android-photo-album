@@ -1,13 +1,16 @@
-package me.majiajie.photoalbum.photo;
+package me.majiajie.photoalbum.data;
 
+import android.media.MediaPlayer;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
+import java.io.IOException;
+
 /**
  * 图片文件信息
  */
-public class Photo implements Parcelable{
+public class AlbumFileBean implements Parcelable{
 
     /**
      * 在系统数据库中的id
@@ -54,7 +57,14 @@ public class Photo implements Parcelable{
      */
     private long date_modified;
 
-    public Photo(long id, String path, String name, String mime_type, long width, long height, long size, long date_add, long date_modified) {
+    /**
+     * 是否为视频
+     */
+    private boolean video;
+
+    private int voideTime;
+
+    public AlbumFileBean(long id, String path, String name, String mime_type, long width, long height, long size, long date_add, long date_modified, boolean video) {
         this.id = id;
         this.path = path;
         this.name = name;
@@ -64,9 +74,11 @@ public class Photo implements Parcelable{
         this.size = size;
         this.date_add = date_add;
         this.date_modified = date_modified;
+        this.video = video;
     }
 
-    protected Photo(Parcel in) {
+
+    protected AlbumFileBean(Parcel in) {
         id = in.readLong();
         path = in.readString();
         name = in.readString();
@@ -76,6 +88,8 @@ public class Photo implements Parcelable{
         size = in.readLong();
         date_add = in.readLong();
         date_modified = in.readLong();
+        video = in.readByte() != 0;
+        voideTime = in.readInt();
     }
 
     @Override
@@ -89,6 +103,8 @@ public class Photo implements Parcelable{
         dest.writeLong(size);
         dest.writeLong(date_add);
         dest.writeLong(date_modified);
+        dest.writeByte((byte) (video ? 1 : 0));
+        dest.writeInt(voideTime);
     }
 
     @Override
@@ -96,22 +112,22 @@ public class Photo implements Parcelable{
         return 0;
     }
 
-    public static final Creator<Photo> CREATOR = new Creator<Photo>() {
+    public static final Creator<AlbumFileBean> CREATOR = new Creator<AlbumFileBean>() {
         @Override
-        public Photo createFromParcel(Parcel in) {
-            return new Photo(in);
+        public AlbumFileBean createFromParcel(Parcel in) {
+            return new AlbumFileBean(in);
         }
 
         @Override
-        public Photo[] newArray(int size) {
-            return new Photo[size];
+        public AlbumFileBean[] newArray(int size) {
+            return new AlbumFileBean[size];
         }
     };
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Photo){
-            return TextUtils.equals(path,((Photo) obj).getPath());
+        if (obj instanceof AlbumFileBean){
+            return TextUtils.equals(path,((AlbumFileBean) obj).getPath());
         }
         return super.equals(obj);
     }
@@ -119,6 +135,22 @@ public class Photo implements Parcelable{
     @Override
     public int hashCode() {
         return path.hashCode();
+    }
+
+    public int getVoideTime() {
+        if (voideTime <= 0){
+            MediaPlayer player = new MediaPlayer();
+            try {
+                player.setDataSource(path);
+                player.prepare();
+                voideTime = (int) Math.max(1,Math.ceil(player.getDuration() / 1000.0));
+            } catch (IOException e) {
+                e.printStackTrace();
+                voideTime = 0;
+            }
+            player.release();
+        }
+        return voideTime;
     }
 
     public long getId() {
@@ -191,5 +223,13 @@ public class Photo implements Parcelable{
 
     public void setDate_modified(long date_modified) {
         this.date_modified = date_modified;
+    }
+
+    public boolean isVideo() {
+        return video;
+    }
+
+    public void setVideo(boolean video) {
+        this.video = video;
     }
 }

@@ -9,7 +9,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -21,9 +21,14 @@ android {
 }
 
 dependencies {
-    implementation "com.android.support:appcompat-v7:${supportLibraryVersion}"
-    implementation "com.android.support:recyclerview-v7:${supportLibraryVersion}"
-    implementation "me.majiajie:photo-album:${versionName}"
-//    implementation project(':photo-album')
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    // Glide
+    implementation "com.github.bumptech.glide:glide:${glide_version}"
+    annotationProcessor "com.github.bumptech.glide:compiler:${glide_version}"
+    annotationProcessor 'androidx.annotation:annotation:1.1.0'
+
+//    implementation "me.majiajie:photo-album:${versionName}"
+    implementation project(':photo-album')
     testImplementation 'junit:junit:4.12'
 }

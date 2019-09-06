@@ -1,11 +1,11 @@
-package me.majiajie.photoalbum.photo;
+package me.majiajie.photoalbum.data;
 
 import java.util.ArrayList;
 
 /**
  * 图片文件夹
  */
-public class PhotosFolder {
+public class AlbumFolderBean {
 
     private String name;
 
@@ -13,16 +13,16 @@ public class PhotosFolder {
 
     private String firstImage;
 
-    private ArrayList<Photo> images;
+    private ArrayList<AlbumFileBean> files;
 
-    public PhotosFolder(String path) {
+    public AlbumFolderBean(String path) {
         setPath(path);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof PhotosFolder) {
-            return getPath().equalsIgnoreCase(((PhotosFolder) obj).getPath());
+        if (obj instanceof AlbumFolderBean) {
+            return getPath().equalsIgnoreCase(((AlbumFolderBean) obj).getPath());
         }
         return super.equals(obj);
     }
@@ -51,11 +51,11 @@ public class PhotosFolder {
         this.firstImage = firstImage;
     }
 
-    public ArrayList<Photo> getImages() {
-        return images;
+    public ArrayList<AlbumFileBean> getFiles() {
+        return files;
     }
 
-    public void setImages(ArrayList<Photo> images) {
-        this.images = images;
+    public void setFiles(ArrayList<AlbumFileBean> files) {
+        this.files = files;
     }
 }

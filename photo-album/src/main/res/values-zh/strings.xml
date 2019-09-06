@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="photoalbum_title_activity_photo_album">相册</string>
-    <string name="photoalbum_folder_all_photo">所有图片</string>
+    <string name="photoalbum_folder_all_photo">图片</string>
+    <string name="photoalbum_folder_all_file">图片和视频</string>
+    <string name="photoalbum_folder_all_video">所有视频</string>
 
     <string name="photoalbum_hint_no_photo">没有图片或读取图片异常</string>
     <string name="photoalbum_hint_need_read_permission">需要获取[读写手机存储]权限才能使用此功能</string>
     <string name="photoalbum_hint_no_read_permission">拒绝了[读写手机存储]权限,无法使用此功能</string>
-    <string name="photoalbum_hint_selected_max">最多只能选择%d张图片</string>
+    <string name="photoalbum_hint_selected_max_photo">最多只能选择%d张图片</string>
+    <string name="photoalbum_hint_selected_max_video">最多只能选择%d个视频</string>
+    <string name="photoalbum_hint_unable_select_image_video_same_time">不能同时选择视频或图片</string>
 
     <string name="photoalbum_text_photos_number">%d张</string>
     <string name="photoalbum_text_notice">权限提醒</string>
@@ -14,6 +18,5 @@
     <string name="photoalbum_text_preview">预览</string>
     <string name="photoalbum_text_original">原图</string>
     <string name="photoalbum_text_selected">选择</string>
-
 
 </resources>

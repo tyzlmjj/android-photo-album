@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath 'com.android.tools.build:gradle:3.5.0'
     }
 }
 
@@ -24,12 +24,12 @@ task clean(type: Delete) {
 }
 
 ext{
-    compileSdkVersion = 27
+    compileSdkVersion = 29
     minSdkVersion = 19
-    targetSdkVersion = 27
+    targetSdkVersion = 29
 
-    versionCode = 7
-    versionName = "0.2.3"
+    versionCode = 8
+    versionName = "0.3.0"
 
-    supportLibraryVersion = '27.1.1'
+    glide_version = "4.8.0"
 }
