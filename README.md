@@ -2,14 +2,34 @@
 
 Android 本地相册选择
 
-[Demo.apk](https://github.com/tyzlmjj/android-photo-album/releases/download/0.2.3/Demo.apk)
+[Demo.apk](https://github.com/tyzlmjj/android-photo-album/releases/download/0.3.1/Demo.apk)
 
-## 添加gradle依赖
+## 添加依赖
 
 ```
-implementation 'com.android.support:appcompat-v7:+'
-implementation 'com.android.support:recyclerview-v7:+'
-implementation 'me.majiajie:photo-album:0.2.3'
+implementation 'me.majiajie:photo-album:0.3.1'
+```
+
+## 初始化
+1. 实现`IAlbumImageLoader`接口
+```java
+public class PhotoAlbumImageLoader implements IAlbumImageLoader {  
+  
+  @Override  
+  public void loadLocalImageOrVideo(ImageView imageView, String path) {  
+        // todo 加载图片
+  }  
+  
+  @Override  
+  public void loadLocalImageOrVideo(ImageView imageView, Uri uri) {  
+        // todo 加载图片
+  }  
+  
+}
+```
+2. 在合适的位置初始化
+```java
+Album.init(new PhotoAlbumImageLoader());
 ```
 
 ## 使用
@@ -22,13 +42,13 @@ PhotoAlbumActivity.startActivityForResult(this,new PhotoAlbumActivity.RequestDat
 ```
 
 在`onActivityResult`中接收扫码结果
-```
+```java
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
     if (resultCode == Activity.RESULT_OK && requestCode == PhotoAlbumActivity.REQUEST_CODE){
-        // 获取返回的数据
-        PhotoAlbumActivity.ResultData resultData = PhotoAlbumActivity.getResult(data);
+        // 获取返回的数据
+        PhotoAlbumActivity.ResultData resultData = PhotoAlbumActivity.getResult(data);
     }
 }
 ```
@@ -40,23 +60,20 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 创建一个继承[BaseCompleteFragment](https://github.com/tyzlmjj/android-photo-album/blob/master/photo-album/src/main/java/me/majiajie/photoalbum/BaseCompleteFragment.java)的Fragment，注意这个类必须是公开的
 
 例如：
-```
+```java
 public class SelectPhotoCompleteFragment extends BaseCompleteFragment {
 
     @Override
     protected void onResultData(PhotoAlbumActivity.ResultData resultData) {
-       // 在这里处理选择的图片
-    }
+       // 在这里处理选择的图片
+    }
 
 }
 ```
 
 启动相册Activity时需要设置这个Fragment的全名。
-```
+```java
 PhotoAlbumActivity.RequestData requestData = new PhotoAlbumActivity.RequestData();
 requestData.setFragmentClassName(SelectPhotoCompleteFragment.class.getName());
 PhotoAlbumActivity.startActivityForResult(this,requestData);
 ```
-
-
-
