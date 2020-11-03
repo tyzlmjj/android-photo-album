@@ -1,8 +1,14 @@
 package me.majiajie.photoalbum.data;
 
+import android.annotation.TargetApi;
+import android.content.ContentUris;
+import android.content.Context;
 import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import java.io.IOException;
@@ -10,7 +16,7 @@ import java.io.IOException;
 /**
  * 图片文件信息
  */
-public class AlbumFileBean implements Parcelable{
+public class AlbumFileBean implements Parcelable {
 
     /**
      * 在系统数据库中的id
@@ -62,7 +68,7 @@ public class AlbumFileBean implements Parcelable{
      */
     private boolean video;
 
-    private int voideTime;
+    private int voideTime = -1;
 
     public AlbumFileBean(long id, String path, String name, String mime_type, long width, long height, long size, long date_add, long date_modified, boolean video) {
         this.id = id;
@@ -126,8 +132,8 @@ public class AlbumFileBean implements Parcelable{
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof AlbumFileBean){
-            return TextUtils.equals(path,((AlbumFileBean) obj).getPath());
+        if (obj instanceof AlbumFileBean) {
+            return TextUtils.equals(path, ((AlbumFileBean) obj).getPath());
         }
         return super.equals(obj);
     }
@@ -137,13 +143,20 @@ public class AlbumFileBean implements Parcelable{
         return path.hashCode();
     }
 
-    public int getVoideTime() {
-        if (voideTime <= 0){
+    /**
+     * 获取视频时长
+     */
+    public int getVoideTime(Context context) {
+        if (voideTime < 0) {
             MediaPlayer player = new MediaPlayer();
             try {
-                player.setDataSource(path);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    player.setDataSource(context, getUri());
+                } else {
+                    player.setDataSource(path);
+                }
                 player.prepare();
-                voideTime = (int) Math.max(1,Math.ceil(player.getDuration() / 1000.0));
+                voideTime = (int) Math.max(1, Math.ceil(player.getDuration() / 1000.0));
             } catch (IOException e) {
                 e.printStackTrace();
                 voideTime = 0;
@@ -151,6 +164,18 @@ public class AlbumFileBean implements Parcelable{
             player.release();
         }
         return voideTime;
+    }
+
+    /**
+     * 获取文件Uri
+     */
+    @TargetApi(Build.VERSION_CODES.Q)
+    public Uri getUri() {
+        if (video) {
+            return ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, getId());
+        } else {
+            return ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, getId());
+        }
     }
 
     public long getId() {

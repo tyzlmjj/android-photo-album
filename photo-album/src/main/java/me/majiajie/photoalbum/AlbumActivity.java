@@ -3,6 +3,7 @@ package me.majiajie.photoalbum;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +34,7 @@ import me.majiajie.photoalbum.data.AlbumFolderBean;
 /**
  * 自定义相册
  */
+
 public class AlbumActivity extends AppCompatActivity implements PhotoAndVideoDataLoadFragment.PhotosLoadCallBack, RequestPermissionFragment.RequestPermissionsCallback, AlbumListFragment.PhotoListListener {
 
     public static final int REQUEST_CODE = 111;
@@ -50,6 +53,8 @@ public class AlbumActivity extends AppCompatActivity implements PhotoAndVideoDat
      * 读取外部文件的权限
      */
     private final String[] READ_PERMISSION = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    private final String[] READ_PERMISSION_29 = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_MEDIA_LOCATION};
 
     private Button mBtnDone;
 
@@ -85,17 +90,17 @@ public class AlbumActivity extends AppCompatActivity implements PhotoAndVideoDat
      * @param data     请求的参数
      */
     public static void startActivityForResult(Fragment fragment, RequestData data) {
-        startActivityForResult(fragment,data,REQUEST_CODE);
+        startActivityForResult(fragment, data, REQUEST_CODE);
     }
 
     /**
      * 启动自定义相册页面
      *
-     * @param fragment {@link Fragment}
-     * @param data     请求的参数
+     * @param fragment    {@link Fragment}
+     * @param data        请求的参数
      * @param requestCode 请求代码
      */
-    public static void startActivityForResult(Fragment fragment, RequestData data,int requestCode) {
+    public static void startActivityForResult(Fragment fragment, RequestData data, int requestCode) {
         Intent intent = new Intent(fragment.getContext(), AlbumActivity.class);
         intent.putExtra(ARG_DATA, data);
         fragment.startActivityForResult(intent, requestCode);
@@ -157,40 +162,51 @@ public class AlbumActivity extends AppCompatActivity implements PhotoAndVideoDat
 
         mBtnDone = findViewById(R.id.btn_done);
 
+
         // 添加请求权限的Fragment
         mRequestPermissionFragment = (RequestPermissionFragment) getSupportFragmentManager().findFragmentByTag(TAG_REQUEST_PERMISSION);
         if (mRequestPermissionFragment == null) {
-            mRequestPermissionFragment = RequestPermissionFragment.newInstance(READ_PERMISSION, getString(R.string.photoalbum_hint_need_read_permission));
+            String[] permission;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                permission = READ_PERMISSION_29;
+            } else {
+                permission = READ_PERMISSION;
+            }
+            mRequestPermissionFragment = RequestPermissionFragment.newInstance(permission, getString(R.string.photoalbum_hint_need_read_permission));
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.add(mRequestPermissionFragment, TAG_REQUEST_PERMISSION).commit();
         }
 
-        // 点击完成按钮
-        mBtnDone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                done(mSelectedPhotos);
-            }
-        });
+        if (mRequestData.isSingle()) {// 在点击直接返回时隐藏完成按钮
+            mBtnDone.setVisibility(View.GONE);
+        } else {// 点击完成按钮
+            mBtnDone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    done(mSelectedPhotos);
+                }
+            });
+        }
 
         // 设置显示或隐藏原图按钮
         mPhotoListFragment.showFullImageBtn(mRequestData.isShowFullImageBtn());
 
         // 如果传入了Fragment类名字段就添加Fragment
-        if (!TextUtils.isEmpty(mRequestData.getFragmentClassName())){
+        if (!TextUtils.isEmpty(mRequestData.getFragmentClassName())) {
             try {
                 mBaseCompleteFragment = (BaseCompleteFragment) getSupportFragmentManager().findFragmentByTag(TAG_COMPLETE_FRAGMENT);
-                if (mBaseCompleteFragment == null){
+                if (mBaseCompleteFragment == null) {
                     mBaseCompleteFragment = (BaseCompleteFragment) Class.forName(mRequestData.getFragmentClassName()).newInstance();
                     getSupportFragmentManager().beginTransaction()
-                            .add(mBaseCompleteFragment,TAG_COMPLETE_FRAGMENT)
+                            .add(mBaseCompleteFragment, TAG_COMPLETE_FRAGMENT)
                             .commit();
                 }
-                
+
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
+
     }
 
     private boolean once = true;
@@ -297,7 +313,7 @@ public class AlbumActivity extends AppCompatActivity implements PhotoAndVideoDat
      */
     private void setResult(ArrayList<AlbumFileBean> photos) {
         ResultData resultData = new ResultData(photos, mPhotoListFragment.isUseFullImage());
-        if (mBaseCompleteFragment != null){
+        if (mBaseCompleteFragment != null) {
             mBaseCompleteFragment.onResultData(resultData);
         } else {
             Intent intent = new Intent();
@@ -331,10 +347,10 @@ public class AlbumActivity extends AppCompatActivity implements PhotoAndVideoDat
             mBtnDone.setEnabled(false);
         } else {
             int maxNumber;
-            if (mRequestData.isSinglePhoto() && mRequestData.isSingleVideo()){
+            if (mRequestData.isSinglePhoto() && mRequestData.isSingleVideo()) {
                 // 这种情况不会出现，因为数据会直接返回
                 maxNumber = 1;
-            } else if(mRequestData.getMaxNumber() > 0){
+            } else if (mRequestData.getMaxNumber() > 0) {
                 maxNumber = mRequestData.getMaxNumber();
             } else {
                 int maxPhotoNumber = mRequestData.isSinglePhoto() ? 1 : mRequestData.maxPhotoNumber;
@@ -351,15 +367,15 @@ public class AlbumActivity extends AppCompatActivity implements PhotoAndVideoDat
      * 添加加载图片数据的Fragment
      */
     private void addLoadDataFragment() {
-        if (mRequestData.isShowPhoto() || mRequestData.isShowVideo()){
+        if (mRequestData.isShowPhoto() || mRequestData.isShowVideo()) {
             PhotoAndVideoDataLoadFragment photoDataLoadFragment = (PhotoAndVideoDataLoadFragment) getSupportFragmentManager().findFragmentByTag(TAG_PHOTO_LOAD);
             if (photoDataLoadFragment == null) {
-                photoDataLoadFragment = PhotoAndVideoDataLoadFragment.newInstance(mRequestData.getShowImageMimeType(), mRequestData.getFilterImageMimeType(), mRequestData.isShowVideo(),mRequestData.isShowPhoto());
+                photoDataLoadFragment = PhotoAndVideoDataLoadFragment.newInstance(mRequestData.getShowImageMimeType(), mRequestData.getFilterImageMimeType(), mRequestData.isShowVideo(), mRequestData.isShowPhoto());
                 getSupportFragmentManager().beginTransaction()
                         .add(photoDataLoadFragment, TAG_PHOTO_LOAD).commitAllowingStateLoss();
             }
         } else {
-            Toast.makeText(this,"选择数量都为零！你在逗我吗？",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "选择数量都为零！你在逗我吗？", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -436,7 +452,7 @@ public class AlbumActivity extends AppCompatActivity implements PhotoAndVideoDat
         /**
          * 可选的最大数量(包括图片和视频)
          * 注意: 当此变量小于等于0时，使用maxPhotoNumber和maxVideoNumber。
-         *      当此变量大于0时，忽略maxPhotoNumber和maxVideoNumber。
+         * 当此变量大于0时，忽略maxPhotoNumber和maxVideoNumber。
          */
         private int maxNumber = 0;
 
@@ -494,7 +510,15 @@ public class AlbumActivity extends AppCompatActivity implements PhotoAndVideoDat
          */
         private String fragmentClassName;
 
-        public RequestData(){}
+        public RequestData() {
+        }
+
+        /**
+         * 判断是否单选
+         */
+        public boolean isSingle() {
+            return !(maxNumber > 0 || (!isSinglePhoto() && maxPhotoNumber > 0) || (!isSingleVideo() && maxVideoNumber > 0));
+        }
 
         public boolean isShowVideo() {
             return isSingleVideo() || maxVideoNumber > 0 || maxNumber > 0;
@@ -553,7 +577,7 @@ public class AlbumActivity extends AppCompatActivity implements PhotoAndVideoDat
         }
 
         public void setMaxNumber(int maxNumber) {
-            this.maxNumber = Math.max(0,maxNumber);
+            this.maxNumber = Math.max(0, maxNumber);
         }
 
         public int getMaxPhotoNumber() {
@@ -561,7 +585,7 @@ public class AlbumActivity extends AppCompatActivity implements PhotoAndVideoDat
         }
 
         public void setMaxPhotoNumber(int maxPhotoNumber) {
-            this.maxPhotoNumber = Math.max(0,maxPhotoNumber);
+            this.maxPhotoNumber = Math.max(0, maxPhotoNumber);
         }
 
         public int getMaxVideoNumber() {
@@ -569,7 +593,7 @@ public class AlbumActivity extends AppCompatActivity implements PhotoAndVideoDat
         }
 
         public void setMaxVideoNumber(int maxVideoNumber) {
-            this.maxVideoNumber = Math.max(0,maxVideoNumber);
+            this.maxVideoNumber = Math.max(0, maxVideoNumber);
         }
 
         public boolean isSinglePhoto() {

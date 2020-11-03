@@ -1,7 +1,7 @@
-// plugins {
-//     id "com.jfrog.bintray" version "1.7.3"
-//     id "com.github.dcendents.android-maven" version "1.5"
-// }
+//plugins {
+//    id "com.jfrog.bintray" version "1.8.4"
+//    id "com.github.dcendents.android-maven" version "2.1"
+//}
 
 apply plugin: 'com.android.library'
 
@@ -24,13 +24,9 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'androidx.exifinterface:exifinterface:1.0.0'
-    implementation('com.davemorrissey.labs:subsampling-scale-image-view:3.10.0', {
-        exclude group: 'com.android.support', module: 'exifinterface'
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+    implementation "androidx.appcompat:appcompat:${appcompat_version}"
+    implementation "androidx.recyclerview:recyclerview:${recyclerview_version}"
+    implementation 'com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0'
 }
 
-// apply from: 'upload_to_bintray.gradle'
+//apply from: 'upload_to_bintray.gradle'

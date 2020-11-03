@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         AlbumActivity.RequestData requestData = new AlbumActivity.RequestData();
         requestData.setMaxPhotoNumber(0);
         requestData.setSingleVideo(true);
+        requestData.setShowFullImageBtn(false);
         AlbumActivity.startActivityForResult(this,requestData);
     }
 

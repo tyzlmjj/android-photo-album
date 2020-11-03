@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -166,8 +167,8 @@ public class AlbumListFragment extends Fragment {
     /**
      * 设置文件数据源
      *
-     * @param folderList 分目录数据
-     * @param requestData      用于判断的数据
+     * @param folderList  分目录数据
+     * @param requestData 用于判断的数据
      */
     public void setPhotoList(ArrayList<AlbumFolderBean> folderList, AlbumActivity.RequestData requestData) {
         mData = folderList;
@@ -184,6 +185,11 @@ public class AlbumListFragment extends Fragment {
 
             //设置按钮显示的文件夹名字
             mBtnSelectFolder.setText(mData.get(mSelectedFolderIndex).getName());
+        }
+
+        // 点击直接返回时 隐藏预览按钮
+        if (requestData.isSingle()) {
+            mBtnPreview.setVisibility(View.GONE);
         }
     }
 
@@ -427,7 +433,11 @@ public class AlbumListFragment extends Fragment {
                 holder.setCheck(mContext, mFileSelectedList.contains(file), false);
             }
 
-            mImageLoader.loadLocalImageOrVideo(holder.image, file.getPath());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                mImageLoader.loadLocalImageOrVideo(holder.image, file.getUri());
+            } else {
+                mImageLoader.loadLocalImageOrVideo(holder.image, file.getPath());
+            }
 
             // 点击选中
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -461,7 +471,7 @@ public class AlbumListFragment extends Fragment {
          */
         private void bindVideo(final VideoViewHolder holder, AlbumFileBean file) {
             // 视频时长
-            int time = file.getVoideTime();
+            int time = file.getVoideTime(holder.itemView.getContext());
             holder.tvVideoTime.setText(String.format(Locale.CHINA, "%02d:%02d", time / 60, time % 60));
 
             if (mRequestData.isSingleVideo()) {
@@ -472,7 +482,11 @@ public class AlbumListFragment extends Fragment {
                 holder.setCheck(mContext, mFileSelectedList.contains(file), false);
             }
             // 图片
-            mImageLoader.loadLocalImageOrVideo(holder.image, file.getPath());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                mImageLoader.loadLocalImageOrVideo(holder.image, file.getUri());
+            } else {
+                mImageLoader.loadLocalImageOrVideo(holder.image, file.getPath());
+            }
             // 点击选中
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -601,12 +615,18 @@ public class AlbumListFragment extends Fragment {
         public void onBindViewHolder(final FolderViewHolder holder, int position) {
             AlbumFolderBean folder = mData.get(position);
 
-            mImageLoader.loadLocalImageOrVideo(holder.imgPhoto, folder.getFirstImage());
-
             holder.tvName.setText(folder.getName());
             int number = folder.getFiles() == null ? 0 : folder.getFiles().size();
             holder.tvCount.setText(getString(R.string.photoalbum_text_photos_number, number));
             holder.radioSelect.setChecked(mSelectedFolderIndex == position);
+
+            if (number > 0) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    mImageLoader.loadLocalImageOrVideo(holder.imgPhoto, folder.getFiles().get(0).getUri());
+                } else {
+                    mImageLoader.loadLocalImageOrVideo(holder.imgPhoto, folder.getFiles().get(0).getPath());
+                }
+            }
 
             // 点击Item
             holder.itemView.setOnClickListener(new View.OnClickListener() {

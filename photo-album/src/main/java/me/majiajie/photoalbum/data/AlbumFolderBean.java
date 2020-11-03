@@ -7,11 +7,15 @@ import java.util.ArrayList;
  */
 public class AlbumFolderBean {
 
+    /**
+     * 文件夹名称
+     */
     private String name;
 
+    /**
+     * 文件夹路径
+     */
     private String path;
-
-    private String firstImage;
 
     private ArrayList<AlbumFileBean> files;
 
@@ -43,14 +47,6 @@ public class AlbumFolderBean {
         this.path = path;
     }
 
-    public String getFirstImage() {
-        return firstImage;
-    }
-
-    public void setFirstImage(String firstImage) {
-        this.firstImage = firstImage;
-    }
-
     public ArrayList<AlbumFileBean> getFiles() {
         return files;
     }
@@ -58,4 +54,5 @@ public class AlbumFolderBean {
     public void setFiles(ArrayList<AlbumFileBean> files) {
         this.files = files;
     }
+
 }

@@ -21,14 +21,13 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation "androidx.appcompat:appcompat:${appcompat_version}"
+    implementation "androidx.recyclerview:recyclerview:${recyclerview_version}"
     // Glide
     implementation "com.github.bumptech.glide:glide:${glide_version}"
     annotationProcessor "com.github.bumptech.glide:compiler:${glide_version}"
     annotationProcessor 'androidx.annotation:annotation:1.1.0'
 
-//    implementation "me.majiajie:photo-album:${versionName}"
-    implementation project(':photo-album')
-    testImplementation 'junit:junit:4.12'
+    implementation "me.majiajie:photo-album:${versionName}"
+//    implementation project(':photo-album')
 }

@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -128,7 +129,6 @@ public class PhotoAndVideoDataLoadFragment extends Fragment {
         private final int MIME_TYPE = 7;
         private final int SIZE = 8;
         private final int MEDIA_TYPE = 9;
-        private final int RESOLUTION = 10;
 
         private final String[] FILE_PROJECTION = {
                 MediaStore.MediaColumns._ID,
@@ -140,8 +140,7 @@ public class PhotoAndVideoDataLoadFragment extends Fragment {
                 MediaStore.MediaColumns.WIDTH,
                 MediaStore.MediaColumns.MIME_TYPE,
                 MediaStore.MediaColumns.SIZE,
-                MediaStore.Files.FileColumns.MEDIA_TYPE,
-                MediaStore.Video.VideoColumns.RESOLUTION
+                MediaStore.Files.FileColumns.MEDIA_TYPE
         };
 
         private final String[] IMAGE_PROJECTION = {
@@ -209,20 +208,10 @@ public class PhotoAndVideoDataLoadFragment extends Fragment {
                     long size = cursor.getLong(SIZE);
                     long width = cursor.getLong(WIDTH);
                     long height = cursor.getLong(HEIGHT);
-
                     boolean video = false;
+
                     if (mShowVideo) {
                         video = cursor.getInt(MEDIA_TYPE) == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO;
-                        if (video) {// 如果是视频，宽高需要按分辨率设置
-                            String resolution = cursor.getString(RESOLUTION);
-                            if (!TextUtils.isEmpty(resolution)) {
-                                String[] wh = resolution.split("x");
-                                if (wh.length == 2) {
-                                    height = Long.parseLong(wh[0]);
-                                    width = Long.parseLong(wh[1]);
-                                }
-                            }
-                        }
                     }
 
                     if (!TextUtils.isEmpty(path) && !TextUtils.isEmpty(name) && !isFilter(mime_type, video)) {
@@ -233,7 +222,6 @@ public class PhotoAndVideoDataLoadFragment extends Fragment {
                         if (file.isVideo()) {
                             if (videoFloder.getFiles() == null) {
                                 videoFloder.setFiles(new ArrayList<AlbumFileBean>());
-                                videoFloder.setFirstImage(file.getPath());
                             }
                             videoFloder.getFiles().add(file);
                         } else {
@@ -248,7 +236,6 @@ public class PhotoAndVideoDataLoadFragment extends Fragment {
                                 f.getFiles().add(file);
                             } else {// 新文件夹
                                 floder.setName(imageParentFile.getName());
-                                floder.setFirstImage(file.getPath());
 
                                 ArrayList<AlbumFileBean> newList = new ArrayList<>();
                                 newList.add(file);
@@ -269,7 +256,6 @@ public class PhotoAndVideoDataLoadFragment extends Fragment {
                 if (mShowPhoto && allFileList.size() > 0) {
                     AlbumFolderBean floder = new AlbumFolderBean("**/storage/**");//这个目录随便写的(但是不要与别的目录重复)
                     floder.setName(mShowVideo ? getResources().getString(R.string.photoalbum_folder_all_file) : getResources().getString(R.string.photoalbum_folder_all_photo));
-                    floder.setFirstImage(allFileList.get(0).getPath());
                     floder.setFiles(allFileList);
 
                     folderList.add(0, floder);

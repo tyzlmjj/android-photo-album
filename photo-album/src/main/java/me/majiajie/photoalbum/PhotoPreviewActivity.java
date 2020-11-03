@@ -277,7 +277,11 @@ public class PhotoPreviewActivity extends AppCompatActivity {
             if (photo.isVideo()) {
                 VideoViewHolder videoHolder = VideoViewHolder.newInstance(container);
                 container.addView(videoHolder.itemView);
-                mImageLoader.loadLocalImageOrVideo(videoHolder.imgVideo, photo.getPath());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    mImageLoader.loadLocalImageOrVideo(videoHolder.imgVideo, photo.getUri());
+                } else {
+                    mImageLoader.loadLocalImageOrVideo(videoHolder.imgVideo, photo.getPath());
+                }
 
                 final String path = photo.getPath();
                 final long id = photo.getId();
@@ -307,7 +311,11 @@ public class PhotoPreviewActivity extends AppCompatActivity {
                 PhotoViewHolder holder = new PhotoViewHolder(container.getContext());
                 container.addView(holder.itemView);
                 holder.imageView.setDoubleTapZoomDuration(250);
-                holder.imageView.setImage(ImageSource.uri(photo.getPath()));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    holder.imageView.setImage(ImageSource.uri(photo.getUri()));
+                } else {
+                    holder.imageView.setImage(ImageSource.uri(photo.getPath()));
+                }
                 return holder.itemView;
             }
         }
@@ -318,7 +326,7 @@ public class PhotoPreviewActivity extends AppCompatActivity {
         }
     }
 
-    class PhotoViewHolder {
+    static class PhotoViewHolder {
 
         private View itemView;
         private SubsamplingScaleImageView imageView;

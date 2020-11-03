@@ -1,6 +1,9 @@
 package me.majiajie.androidphotoalbum;
 
+import android.net.Uri;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
 
 import me.majiajie.photoalbum.IAlbumImageLoader;
 
@@ -10,7 +13,13 @@ import me.majiajie.photoalbum.IAlbumImageLoader;
 public class PhotoAlbumImageLoader implements IAlbumImageLoader {
 
     @Override
-    public void loadLocalImageOrVideo(ImageView imageView, String path) {
+    public void loadLocalImageOrVideo(@NonNull ImageView imageView,@NonNull  String path) {
         GlideApp.with(imageView).load(path).into(imageView);
     }
+
+    @Override
+    public void loadLocalImageOrVideo(@NonNull ImageView imageView,@NonNull  Uri uri) {
+        GlideApp.with(imageView).load(uri).into(imageView);
+    }
+
 }
